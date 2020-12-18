@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: curl-config
+  namespace: mavenir-platform
+data:
+  test.sh: |
+   #!/bin/sh
+   KEY2=$(echo $SSH_KEY|tr -d '\n')
+   export KEY2
+   

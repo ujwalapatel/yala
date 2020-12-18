@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: token-ssh
+  name: token-ssh
+  namespace: mavenir-platform
+spec:
+  containers:
+  - image: tea-cli
+    name: token-ssh
+    imagePullPolicy: IfNotPresent
+    command: 
+     - sh
+     - "-c"
+     - |
+       /bin/sh <<'EOF'
+       # curl -X POST "http://mavenir-platform:Mav123@gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/users/mavenir-platform/tokens" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{  \"name\": \"ujwala-token\"}"
+       EOF
+    env:
+      - name: SSH_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-ssh-secret
+            key: ssh-publickey

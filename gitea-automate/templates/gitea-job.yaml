@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gitea-job
+  namespace: mavenir-platform
+spec:
+  template:
+    spec:
+      imagePullSecrets: [ name: image-pull-secret ]
+      containers:
+      - name: gitea-job
+        image: {{ .Values.gitea.image }}
+        command: ["/bin/sh", "-c", "bash /scripts/tea-script.sh" ]
+        env:
+          - name: SSH_KEY
+            valueFrom:
+              secretKeyRef:
+                name: argo-ssh-secret
+                key: ssh-publickey
+          - name: username
+            valueFrom:
+              secretKeyRef:
+                name: token-secret
+                key: username
+          - name: password
+            valueFrom:
+              secretKeyRef:
+                name: token-secret
+                key: password
+        volumeMounts:
+        - name: tea-vol
+          mountPath: /scripts
+      volumes:
+      - name: tea-vol
+        configMap:
+          name: gitea-script 
+          defaultMode: 0744
+      restartPolicy: Never
+  backoffLimit: 4

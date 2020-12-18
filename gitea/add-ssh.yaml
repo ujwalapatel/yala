@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: add-ssh20
+  namespace: mavenir-platform
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: add-ssh20
+        image: tea-repo
+        imagePullPolicy: IfNotPresent
+        command: 
+         - sh
+         - "-c"
+         - |
+           /bin/sh <<'EOF'
+           PUB_KEY=$(echo $SSH_KEY|tr -d '\n')
+           curl -v POST "http://gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/admin/users/mavenir-platform/keys" -H  "accept: application/json" -H  "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{ \"key\": \"$PUB_KEY\",  \"read_only\": true,  \"title\": \"new-key6\" }"
+           EOF
+        env:
+          - name: SSH_KEY
+            valueFrom:
+              secretKeyRef:
+                name: argo-ssh-secret
+                key: ssh-publickey
+          - name: TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: gitea-token21
+                key: tea-token

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitea-script
+  namespace: mavenir-platform
+data:
+  tea-script.sh: |
+   #!/bin/bash
+   export TOKEN=$(curl -X POST "http://$username:$password@gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/users/mavenir-platform/tokens" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{  \"name\": \"token-gitea10\"}" | grep -i sha1 | cut -f4 -d':' | cut -f2 -d'"')
+   kubectl create secret generic gitea-token12 --from-literal=tea-token=$TOKEN -n mavenir-platform
+   /root/go/bin/tea login add --name=mavenir-platform --url=http://gitea-http.mavenir-platform.svc.cluster.local:3000 --token=$TOKEN
+   /root/go/bin/tea repo c --name platform-new-repo12
+   PUB_KEY=$(echo $SSH_KEY|tr -d '\n')
+   curl -v POST "http://gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/admin/users/mavenir-platform/keys" -H  "accept: application/json" -H  "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{ \"key\": \"$PUB_KEY\",  \"read_only\": true,  \"title\": \"ujwala-test1-ssh4\" }"

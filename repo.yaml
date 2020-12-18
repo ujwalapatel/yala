@@ -1,0 +1,2 @@
+curl -X POST "http://localhost:8081/api/v1/user/repos" -H  "accept: application/json" -H  "Content-Type: application/json" -H "Authorization: Bearer 3cb8d6d1b5551e39312e53ecf8e23f9d12144bd0" -d "{  \"auto_init\": true,  \"default_branch\": \"master\", \"name\": \"repo1\", \"private\": true, \"template\": true,  \"trust_model\": \"default\"}"
+

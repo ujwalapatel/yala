@@ -1,0 +1,23 @@
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "gitea-script"
+  namespace: "{{ .Values.namespace }}"
+data:
+  tea-script.sh: |
+    #!/bin/bash
+    export TOKEN=$(curl -X POST "http://$username:$password@gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/users/gitea_admin/tokens" -H "accept: application/json" -H  "Content-Type: application/json" -d "{  \"name\": \"new-token\"}" | grep -i sha1 | cut -f4 -d':' | cut -f2 -d'"');
+    curl -X POST "http://gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/user/repos" -H  "accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{  \"auto_init\": true,  \"default_branch\": \"master\", \"name\": \"platform2\", \"private\": true, \"template\": true,  \"trust_model\": \"default\"}"
+    PUB_KEY=$(echo $SSH_KEY|tr -d '\n')
+    curl -v POST "http://gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/admin/users/gitea_admin/keys" -H  "accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{ \"key\": \"$PUB_KEY\", \"read_only\": true,  \"title\": \"gitea-ssh\" }"
+
+
+
+
+
+
+
+
+
+
+ 

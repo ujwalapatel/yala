@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-script
+  namespace: mavenir-platform
+data:
+  tea-repo.sh: |
+   #!/bin/bash
+   /root/go/bin/tea login add --name=mavenir-platform --url=http://gitea-http.mavenir-platform.svc.cluster.local:3000 --token=4564cc501058ed21169c8434da76c956776b605a
+   /root/go/bin/tea repo c --name platform

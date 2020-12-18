@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: token-gitea34
+  namespace: mavenir-platform
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: token-gitea34
+        image: tea-repo
+        imagePullPolicy: IfNotPresent
+        command: 
+         - sh
+         - "-c"
+         - |
+           export TOKEN=$(curl -X POST "http://$username:$password@gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/users/mavenir-platform/tokens" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{  \"name\": \"token-gitea88\"}" | grep -i sha1 | cut -f4 -d':' | cut -f2 -d'"')
+           echo $TOKEN 
+        env:
+          - name: username
+            valueFrom:
+              secretKeyRef:
+                name: token-secret
+                key: username
+          - name: password
+            valueFrom:
+              secretKeyRef:
+                name: token-secret
+                key: password

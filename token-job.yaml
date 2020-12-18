@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: add-token
+  namespace: mavenir-platform
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: add-token
+        image: tea-cli
+        imagePullPolicy: IfNotPresent
+        command: 
+         - sh
+         - "-c"
+         - |
+           /bin/sh <<'EOF'
+           curl -i POST "http://mavenir-platform:Mav123@gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/users/mavenir-platform/tokens" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{  \"name\": \"ujwala-token\"}"
+           EOF

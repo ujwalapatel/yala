@@ -1,0 +1,8 @@
+namespace: "mavenir-platform"
+giteasecrets:
+  username: "gitea_admin"
+  password: "r8sA8CPHD9%21bt6d"
+imagePullSecrets:
+  - name: "image-pull-secret"
+gitea:
+  image: "registry.gitlab.com/mwpcicd/platform/tea-repo"

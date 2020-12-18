@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tea9
+  namespace: mavenir-platform
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: tea9
+        image: tea-repo
+        imagePullPolicy: IfNotPresent
+        command: 
+         - sh
+         - "-c"
+         - |
+           curl -X POST "http://gitea-http.mavenir-platform.svc.cluster.local:3000/api/v1/user/repos" -H  "accept: application/json" -H  "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d "{  \"auto_init\": true,  \"default_branch\": \"master\", \"name\": \"repo3\", \"private\": true, \"template\": true,  \"trust_model\": \"default\"}"
+        env:
+          - name: TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: gitea-token21
+                key: tea-token

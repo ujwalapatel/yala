@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-script
+  namespace: mavenir-platform
+data:
+  test.json: |
+   #!/bin/bash
+   echo "kubectl get secret -n mavenir-platform argo-ssh-secret -o jsonpath="{['data']['ssh-publickey']}" | base64 -d"
