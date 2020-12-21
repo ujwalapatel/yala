@@ -1,7 +1,5 @@
 #!/bin/bash
-git init
-touch README.md
 git add .
 git commit -m "initial commit"
-git remote add origin ssh://git@localhost:2222/gitea_admin/testrepo.git
-git push -u origin master -f
+git remote add gitea ssh://git@localhost:2222/gitea_admin/bitbucket.git
+git push -u origin master
