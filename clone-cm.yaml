@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clone-script-repo
+  namespace: mavenir-platform
+data:
+  clone-script.sh: |
+    #!/bin/bash
+    git init
+    git remote add gitea ssh://git@gitea-ssh:2222/gitea_admin/gitea.git
+    git add .
+    git commit -m "initial commit"
+    git push gitea master -f

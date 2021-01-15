@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: clone-script-repo8
+  namespace: mavenir-platform
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: clone-script-repo8
+        image: alpine/git
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c", "sleep 9600" ]
+        volumeMounts:
+        - name: clone-vol 
+          mountPath: /scripts
+      volumes:
+      - name: clone-vol
+        configMap:
+          name: clone-script-repo
+          defaultMode: 0744

@@ -3,18 +3,12 @@ kind: Pod
 metadata:
   creationTimestamp: null
   labels:
-    run: gitea-repo4
-  name: gitea-repo4
+    run: go-apps
+  name: go-apps
   namespace: mavenir-platform
 spec:
   containers:
-  - image: alpine
-    name: gitea-repo
+  - image: go-apps
+    name: go-apps
     imagePullPolicy: IfNotPresent
     command: ["/bin/sh", "-c", "sleep 9600"]
-    env:
-      - name: SSH_KEY
-        valueFrom:
-          secretKeyRef:
-            name: argo-ssh-secret
-            key: ssh-publickey
