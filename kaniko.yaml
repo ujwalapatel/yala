@@ -53,14 +53,14 @@ spec:
     inputs:
       artifacts:
       - name: git-repo
-        path: /apps
+        path: apps
         git:
           repo: https://github.com/{{workflow.parameters.github-user}}/yala.git
           revision: "{{workflow.parameters.github-revision}}"
     container:
       image: alpine:latest
       command: [sh, -c]
-      args: ["cp /apps/* /workspace/; ls /workspace"]
+      args: ["cp apps/* /workspace/; ls /workspace"]
       volumeMounts:
       - name: workspace
         mountPath: /workspace
