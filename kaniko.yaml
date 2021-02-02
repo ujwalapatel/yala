@@ -53,14 +53,14 @@ spec:
     inputs:
       artifacts:
       - name: git-repo
-        path: /yala
+        path: /src/yala/
         git:
           repo: https://github.com/{{workflow.parameters.github-user}}/yala.git
           revision: "{{workflow.parameters.github-revision}}"
     container:
       image: alpine:latest
       command: [sh, -c]
-      args: ["cp /yala/* /workspace/; ls /workspace"]
+      args: ["cp /src/yala/apps/* /workspace/; ls /workspace"]
       volumeMounts:
       - name: workspace
         mountPath: /workspace
@@ -71,7 +71,7 @@ spec:
       # args: ["cat /root/.docker/config.json"]
       image: gcr.io/kaniko-project/executor:debug-v0.18.0
       args: ["--dockerfile","Dockerfile","--destination","{{workflow.parameters.docker-org}}/{{workflow.parameters.image-name-backend}}:{{workflow.parameters.version}}"]
-      workingDir: /yala
+      workingDir: /src/yala/apps/
       volumeMounts:
       - name: docker-config
         mountPath: "/root/.docker/config.json"
