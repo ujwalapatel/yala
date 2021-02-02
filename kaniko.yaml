@@ -11,7 +11,7 @@ spec:
     - name: version
       value: v1
     - name: github-user
-      value: gppillai12
+      value: ujwalapatel
     - name: github-revision
       value: main
     - name: docker-org
@@ -19,7 +19,7 @@ spec:
     - name: build-push-image
       value: true
     - name: image-name-backend
-      value: gpharbor/yala11 
+      value: gpharbor/yala12 
   volumes:
   - name: docker-config
     secret:
@@ -53,14 +53,14 @@ spec:
     inputs:
       artifacts:
       - name: git-repo
-        path: /argo-workflow-kaniko
+        path: /apps
         git:
-          repo: https://github.com/{{workflow.parameters.github-user}}/argo-workflow-kaniko.git
+          repo: https://github.com/{{workflow.parameters.github-user}}/yala.git
           revision: "{{workflow.parameters.github-revision}}"
     container:
       image: alpine:latest
       command: [sh, -c]
-      args: ["cp /argo-workflow-kaniko/* /workspace/; ls /workspace"]
+      args: ["cp /apps/* /workspace/; ls /workspace"]
       volumeMounts:
       - name: workspace
         mountPath: /workspace
@@ -71,7 +71,7 @@ spec:
       # args: ["cat /root/.docker/config.json"]
       image: gcr.io/kaniko-project/executor:debug-v0.18.0
       args: ["--dockerfile","Dockerfile","--destination","{{workflow.parameters.docker-org}}/{{workflow.parameters.image-name-backend}}:{{workflow.parameters.version}}"]
-      workingDir: /argo-workflow-kaniko
+      workingDir: /apps
       volumeMounts:
       - name: docker-config
         mountPath: "/root/.docker/config.json"
